@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fächerauswahl – Personen, Abstimmung und Verlauf</title>
+<style>
+:root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#18263c;background:#f3f6fa}*{box-sizing:border-box}body{margin:0;padding:20px}main{max-width:1120px;margin:auto}h1{margin:0 0 6px}h2{margin-top:0}p{line-height:1.5;color:#536077}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}.tab{background:#e4ebf4;color:#1d3555}.tab[aria-selected="true"]{background:#174c96;color:white}.panel{background:white;border:1px solid #dce4ed;border-radius:13px;padding:20px;margin-top:12px;box-shadow:0 2px 9px #142c4210}.hidden{display:none!important}.tablewrap{overflow:auto;max-height:60vh}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:9px;border-bottom:1px solid #e8edf4}th{background:#f4f7fb;position:sticky;top:0}input,select{font:inherit;border:1px solid #bdcbda;background:white;border-radius:7px;padding:9px;width:100%;max-width:100%}input:focus,select:focus{outline:2px solid #90b5e8}button{border:0;border-radius:8px;background:#2056a3;color:white;padding:11px 15px;font:inherit;font-weight:600;cursor:pointer}button:hover{filter:brightness(.95)}button.secondary{background:#e5edf7;color:#163b69}button.danger{background:#ffebea;color:#a02c26}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}.status{min-height:1.3em;font-weight:600;color:#156343}.muted{color:#657286;font-size:.9rem}.stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin:12px 0}.stat{padding:12px;text-align:center;background:#f3f6fb;border-radius:9px}.stat strong{display:block;font-size:27px}.red{color:#b52838}.green{color:#12804c}.blue{color:#2365c8}.yellow{color:#9c7100}.absent{color:#626b7a}.choice-group{display:flex;gap:6px;flex-wrap:wrap}.choice{position:relative;display:inline-flex;cursor:pointer;min-width:76px;flex:1}.choice input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}.choice span{display:block;width:100%;padding:10px 9px;text-align:center;border-radius:9px;border:2px solid #d4dce7;font-weight:650;background:#f7f9fc;transition:background .12s,border-color .12s;user-select:none}.choice input:focus-visible+span{outline:3px solid #2b69bd;outline-offset:2px}.choice input:checked+span{border-color:#273746;box-shadow:inset 0 0 0 1px #273746}.choice[data-color="Deutsch"] input:checked+span{background:#ffd6dc;color:#8b1729}.choice[data-color="Lesen"] input:checked+span{background:#d6f3df;color:#0d6538}.choice[data-color="Mathe"] input:checked+span{background:#dbeaff;color:#154eaa}.choice[data-color="Englisch"] input:checked+span{background:#fff0aa;color:#725000}.choice[data-color="Fehlt"] input:checked+span{background:#e1e4e9;color:#374151}.vote-person{font-weight:600;white-space:nowrap}.inline{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.inline input{width:auto}.record{padding:15px;margin:12px 0;border:1px solid #dbe4ee;border-radius:10px}.record header{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.smallbtn{padding:7px 10px;font-size:.86rem}.pill{display:inline-block;padding:3px 9px;border-radius:20px;background:#eaf1fb;font-size:.85rem}footer{padding:15px 0}.date-input{max-width:220px}.wide-table{max-height:70vh;overflow:auto}.wide-table table{width:max-content;min-width:100%}.wide-table th,.wide-table td{white-space:nowrap;text-align:center;min-width:90px}.wide-table th:first-child,.wide-table td:first-child{position:sticky;left:0;z-index:2;background:#fff;text-align:left;min-width:170px}.wide-table thead th:first-child{z-index:4;background:#eaf0f7}.wide-table thead th{z-index:3;background:#f4f7fb}.wide-table td.subject{font-weight:600}.importbox{padding:14px;border:1px solid #b6cbe7;border-radius:10px;background:#f1f6fd;margin-bottom:12px}.importbox input{max-width:360px}.notice{background:#fff8db;padding:10px;border-radius:8px;color:#614c0a}.historytools{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.historytools button{font-size:.9rem}@media(max-width:620px){body{padding:10px}.panel{padding:12px}.stats{grid-template-columns:repeat(2,1fr)}th,td{padding:7px;font-size:.92rem}.tabs button{flex:1}.choice{min-width:68px}.choice span{padding:9px 6px;font-size:.85rem}.vote-person{white-space:normal}}
+ .startup{position:fixed;inset:0;z-index:50;background:#17253bd9;display:flex;align-items:center;justify-content:center;padding:18px}.startup-card{background:#fff;color:#17253b;border-radius:18px;padding:clamp(18px,4vw,30px);max-width:550px;width:100%;box-shadow:0 20px 70px #07132366}.startup-card h2{margin:0 0 10px}.startup-card .actions{display:grid;grid-template-columns:1fr;gap:12px}.startup-card button{width:100%;padding:17px;text-align:left}.startup-card button span{display:block;font-size:.82rem;font-weight:400;margin-top:4px;opacity:.85}.startup-note{font-size:.86rem}.startup-error{color:#a02c26;font-weight:600;min-height:1em}body.startup-active{overflow:hidden}body.startup-active main{visibility:hidden} 
+</style></head><body class="startup-active"><div id="startup" class="startup" role="dialog" aria-modal="true" aria-labelledby="startupTitle"><div class="startup-card"><h2 id="startupTitle">Willkommen zur Fächerauswahl</h2><p>Wie möchtest du beginnen?</p><div class="actions"><button id="startNew" type="button">＋ Neue Klasse anlegen<span>30 Namen neu eintragen und anschließend die erste Sicherungsdatei herunterladen.</span></button><button id="startImport" class="secondary" type="button">📂 Vorhandene Datendatei laden<span>Eine JSON-Sicherung vom iPad auswählen und alle bisherigen Einträge fortführen.</span></button><div id="startupFileBox" class="hidden"><label for="startupFile"><strong>JSON-Datei auswählen:</strong></label><input id="startupFile" type="file" accept=".json,application/json"></div></div><p class="startup-note">Die HTML-Datei auf GitHub Pages enthält keine Klassendaten. Lade bei jedem neuen Besuch deine neueste JSON-Datei, damit du mit dem richtigen Datenstand arbeitest.</p><p id="startupError" class="startup-error" role="alert"></p></div></div><main>
+<h1>Fächerauswahl</h1><p>30 Personen · vier Fächer und „Fehlt“ · Ergebnisse nach Datum. Nach jeder Speicherung wird eine Sicherungsdatei angeboten.</p><div class="importbox"><strong>📂 Datendatei laden</strong><p>Beim erneuten Öffnen: Wähle die zuletzt gesicherte JSON-Datei. Sie enthält Personen und alle bisherigen Fachwahlen. Ohne Datei kannst du mit den bereits im Browser gespeicherten Daten weiterarbeiten.</p><div class="actions"><label for="importFile" class="muted">Sicherung auswählen (JSON):</label><input id="importFile" type="file" accept=".json,application/json"><button class="secondary" id="downloadBackup" type="button">⬇ Datendatei herunterladen</button></div><p class="status" id="importStatus" role="status"></p></div>
+<nav class="tabs" aria-label="Seiten"><button class="tab" data-page="people" aria-selected="true">1. Personen</button><button class="tab" data-page="vote" aria-selected="false">2. Fächerauswahl</button><button class="tab" data-page="history" aria-selected="false">3. Übersicht</button></nav>
+<section id="people" class="panel" aria-labelledby="peopleTitle"><h2 id="peopleTitle">Personen eintragen</h2><p>Trage bis zu 30 Namen ein. Leere Felder werden bei der Farbauswahl ausgelassen.</p><div class="tablewrap"><table><thead><tr><th>Nr.</th><th>Name</th></tr></thead><tbody id="peopleRows"></tbody></table></div><div class="actions"><button id="savePeople">💾 Personen speichern</button><button class="secondary" id="toVote">Weiter zur Fächerauswahl →</button></div><p id="peopleStatus" class="status" role="status"></p></section>
+<section id="vote" class="panel hidden" aria-labelledby="voteTitle"><h2 id="voteTitle">Fächerauswahl und Speicherung</h2><p>Tippe für jede Person direkt auf ein Fach oder auf „Fehlt“. Jede Speicherung wird als <strong>neuer Eintrag</strong> mit Datum und Uhrzeit im Verlauf abgelegt.</p><div class="inline"><label for="voteDate"><strong>Datum der Auswahl:</strong></label><input class="date-input" type="date" id="voteDate"></div><p id="voteCount" class="muted"></p><div class="tablewrap"><table><thead><tr><th>Name</th><th>Fach / Fehlt (ein Klick)</th></tr></thead><tbody id="voteRows"></tbody></table></div><div class="actions"><button id="saveVote">💾 Fächerauswahl speichern</button><button class="secondary" id="toHistory">Übersicht anzeigen →</button><button class="secondary" id="clearVotes">Auswahl zurücksetzen</button></div><p id="voteStatus" class="status" role="status"></p></section>
+<section id="history" class="panel hidden" aria-labelledby="historyTitle"><h2 id="historyTitle">Übersicht der gespeicherten Fächerwahlen</h2><p>Eine Zeile pro Person. Die Spalten Mathe, Deutsch, Englisch, Lesen und Fehlt zeigen die Summen aller gespeicherten Wahlen; danach folgt für jede Speicherung eine Datumsspalte. Die Tabelle lässt sich horizontal scrollen.</p><div class="actions"><button class="secondary" id="exportCsv">Tabelle als CSV exportieren</button></div><p id="historyCount" class="muted"></p><div class="wide-table"><table id="summaryTable"><thead id="summaryHead"></thead><tbody id="summaryBody"></tbody></table></div><h3>Gespeicherte Termine verwalten</h3><div id="historyEntries"></div></section>
+<footer><p class="muted">Hinweis: Die Daten werden nur im lokalen Browserspeicher gespeichert – nicht online. Bewahre die heruntergeladene JSON-Sicherungsdatei gut auf. CSV dient nur zur Auswertung, JSON zum Wiederherstellen. Der Verlauf bleibt bei neuen Speicherungen erhalten, kann aber durch Löschen der Browserdaten verloren gehen.</p></footer>
+</main><script>
+'use strict';
+const KEY='farbauswahl-30-v2',OLD='farbauswahl-30-v1',COLORS=['Deutsch','Lesen','Mathe','Englisch','Fehlt'];
+const convert=v=>({Rot:'Deutsch','Grün':'Lesen',Blau:'Mathe',Gelb:'Englisch'})[v]||v;
+const blank=()=>({names:Array(30).fill(''),draft:Array(30).fill(''),history:[]});
+function init(){let obj;try{obj=JSON.parse(localStorage.getItem(KEY));}catch{}if(obj&&Array.isArray(obj.names)&&obj.names.length===30&&Array.isArray(obj.draft)&&obj.draft.length===30&&Array.isArray(obj.history)){return {names:obj.names.map(String),draft:obj.draft.map(c=>COLORS.includes(convert(c))?convert(c):''),history:obj.history.map(rec=>({...rec,entries:Array.isArray(rec.entries)?rec.entries.map(e=>({...e,color:convert(e.color)})):[]}))};}const state=blank();try{const prev=JSON.parse(localStorage.getItem(OLD));if(Array.isArray(prev)&&prev.length===30){prev.forEach((r,i)=>{state.names[i]=String(r.name||'');state.draft[i]=COLORS.includes(convert(r.color))?convert(r.color):'';});}}catch{}return state;}
+let state=init();
+let startupOpen=true;
+function finishStartup(target){startupOpen=false;$('startup').classList.add('hidden');document.body.classList.remove('startup-active');renderPeople();page(target);}
+const $=id=>document.getElementById(id);
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(state));return true;}catch(e){alert('Das Speichern im Browser ist fehlgeschlagen. Bitte Browsereinstellungen bzw. freien Speicher prüfen.');return false;}}
+function localDate(){let d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+$('voteDate').value=localDate();
+function page(name){for(const id of ['people','vote','history']){$(id).classList.toggle('hidden',id!==name);}document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.page===name)));if(name==='vote')renderVote();if(name==='history')renderHistory();}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>page(b.dataset.page)));
+function td(value){let e=document.createElement('td');e.textContent=String(value);return e;}
+function renderPeople(){const t=$('peopleRows');t.replaceChildren();state.names.forEach((name,i)=>{let r=document.createElement('tr'),inp=document.createElement('input');inp.type='text';inp.value=name;inp.placeholder=`Person ${i+1}`;inp.maxLength=120;inp.setAttribute('aria-label',`Name ${i+1}`);inp.addEventListener('input',()=>{state.names[i]=inp.value;$('peopleStatus').textContent='Änderungen noch nicht gespeichert.';});let c=document.createElement('td');c.append(inp);r.append(td(i+1),c);t.append(r);});}
+function savePeople(){state.names=state.names.map(n=>n.trim());if(persist()){$('peopleStatus').textContent='✓ Personen gespeichert.';renderPeople();}}
+$('savePeople').onclick=savePeople;$('toVote').onclick=()=>{savePeople();page('vote');};
+function renderVote(){
+ const t=$('voteRows');t.replaceChildren();
+ state.names.forEach((n,i)=>{
+   if(!n.trim())return;
+   const r=document.createElement('tr'),name=td(n);name.className='vote-person';r.append(name);
+   const cell=document.createElement('td'),group=document.createElement('div');group.className='choice-group';group.setAttribute('role','radiogroup');group.setAttribute('aria-label',`Auswahl für ${n}`);
+   for(const color of COLORS){
+     const label=document.createElement('label');label.className='choice';label.dataset.color=color;
+     const radio=document.createElement('input');radio.type='radio';radio.name=`person-${i}`;radio.value=color;radio.checked=state.draft[i]===color;
+     radio.addEventListener('change',()=>{state.draft[i]=color;$('voteStatus').textContent='Änderungen noch nicht gespeichert.';updateCount();});
+     const caption=document.createElement('span');caption.textContent=({Deutsch:'🔴 Deutsch',Lesen:'🟢 Lesen',Mathe:'🔵 Mathe',Englisch:'🟡 Englisch',Fehlt:'⚪ Fehlt'})[color];
+     label.append(radio,caption);group.append(label);
+   }
+   cell.append(group);r.append(cell);t.append(r);
+ });updateCount();
+}
+function updateCount(){let total=state.names.filter(n=>n.trim()).length,selected=state.names.filter((n,i)=>n.trim()&&state.draft[i]).length;$('voteCount').textContent=total?`${selected} von ${total} Personen erfasst (einschließlich „Fehlt“).`:'Noch keine Personen eingetragen. Bitte zuerst Seite 1 ausfüllen.';}
+$('saveVote').onclick=()=>{let date=$('voteDate').value;if(!date){$('voteStatus').textContent='Bitte ein Datum auswählen.';return;}let entries=state.names.map((n,i)=>({slot:i,name:n.trim(),color:state.draft[i]})).filter(e=>e.name);if(!entries.length){$('voteStatus').textContent='Bitte zunächst Personen auf Seite 1 eintragen.';return;}if(!entries.some(e=>e.color)){$('voteStatus').textContent='Bitte mindestens eine Auswahl treffen.';return;}const item={id:`${Date.now()}-${Math.random().toString(36).slice(2)}`,date,savedAt:new Date().toISOString(),entries};state.history.push(item);if(persist()){$('voteStatus').textContent='✓ Fächerauswahl gespeichert. Die JSON-Sicherungsdatei wird heruntergeladen.';downloadBackup();}else state.history.pop();};
+$('clearVotes').onclick=()=>{if(confirm('Aktuelle Fächerauswahl leeren? Frühere Speicherungen im Verlauf bleiben erhalten.')){state.draft=Array(30).fill('');persist();renderVote();$('voteStatus').textContent='Aktuelle Auswahl zurückgesetzt.';}};
+$('toHistory').onclick=()=>page('history');
+function formatDate(s){if(!/^\d{4}-\d{2}-\d{2}$/.test(s))return s;const [y,m,d]=s.split('-');return `${d}.${m}.${y}`;}
+function allPeople(){
+ const map=new Map();
+ state.names.forEach((name,i)=>{if(name.trim())map.set(i,{id:i,name:name.trim()});});
+ // Personen aus älteren Datensätzen bleiben sichtbar, selbst wenn sie später entfernt wurden.
+ state.history.forEach(rec=>rec.entries.forEach((e,i)=>{let id=Number.isInteger(e.slot)?e.slot:i;if(!map.has(id)&&e.name)map.set(id,{id,name:e.name});}));
+ return Array.from(map.values()).sort((a,b)=>a.id-b.id);
+}
+function bySlot(rec,slot){let x=rec.entries.find(e=>e.slot===slot);return x||(rec.entries.every(e=>e.slot===undefined)?rec.entries.find(e=>e.name===state.names[slot]&&e.name):null)||null;}
+function renderHistory(){
+ const head=$('summaryHead'),body=$('summaryBody');head.replaceChildren();body.replaceChildren();
+ const ordered=state.history.slice().sort((a,b)=>a.date.localeCompare(b.date)||a.savedAt.localeCompare(b.savedAt));
+ $('historyCount').textContent=`${ordered.length} gespeicherte Auswahl(en) · ${allPeople().length} Personen`;
+ const hr=document.createElement('tr');
+ ['Name','Σ Mathe','Σ Deutsch','Σ Englisch','Σ Lesen','Σ Fehlt',...ordered.map((r,i)=>formatDate(r.date)+(ordered.filter(x=>x.date===r.date).length>1?' · '+(ordered.filter(x=>x.date===r.date).findIndex(x=>x.id===r.id)+1):''))].forEach(t=>{const th=document.createElement('th');th.textContent=t;hr.append(th);});head.append(hr);
+ for(const person of allPeople()){
+   const picks=ordered.map(rec=>bySlot(rec,person.id)?.color||'');
+   const tr=document.createElement('tr');tr.append(td(person.name));
+   for(const c of ['Mathe','Deutsch','Englisch','Lesen','Fehlt'])tr.append(td(picks.filter(v=>v===c).length));
+   for(const c of picks)tr.append(td(c||'–'));
+   body.append(tr);
+ }
+ if(!ordered.length){const tr=document.createElement('tr'),c=document.createElement('td');c.colSpan=6;c.textContent='Noch keine Fachwahlen gespeichert.';tr.append(c);body.append(tr);}
+ const out=$('historyEntries');out.replaceChildren();
+ ordered.slice().reverse().forEach(rec=>{
+   let row=document.createElement('div');row.className='record historytools';
+   const t=document.createElement('span');t.textContent=`${formatDate(rec.date)} · ${rec.entries.filter(e=>e.color).length} von ${rec.entries.length} erfasst`;
+   const b=document.createElement('button');b.className='smallbtn danger';b.textContent='Diesen Termin löschen';
+   b.onclick=()=>{if(confirm(`Termin vom ${formatDate(rec.date)} löschen? Danach unbedingt eine neue JSON-Sicherung herunterladen.`)){
+     state.history=state.history.filter(e=>e.id!==rec.id);
+     if(persist()){renderHistory();downloadBackup();}
+   }};
+   row.append(t,b);out.append(row);
+ });
+}
+function csvCell(x){return '"'+String(x??'').replaceAll('"','""')+'"';}
+function downloadFile(name,content,mime){
+ const url=URL.createObjectURL(new Blob([content],{type:mime}));
+ const a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),4000);
+}
+function downloadBackup(){
+ const data={format:'faecherauswahl-30',version:3,exportedAt:new Date().toISOString(),names:state.names,draft:state.draft,history:state.history};
+ downloadFile('faecherauswahl_sicherung_'+localDate()+'.json',JSON.stringify(data,null,2),'application/json');
+}
+$('downloadBackup').onclick=downloadBackup;
+$('startImport').onclick=()=>{$('startupError').textContent='';$('startupFileBox').classList.remove('hidden');$('startupFile').focus();};
+$('startNew').onclick=()=>{
+ const hasExisting=state.names.some(n=>n.trim())||state.history.length>0;
+ if(hasExisting&&!confirm('Es sind noch Daten in diesem Browser gespeichert. Neue Klasse anlegen und diese lokalen Daten ersetzen? Lade vorher unbedingt eine JSON-Sicherung herunter, falls du sie behalten möchtest.'))return;
+ const previous=state;state=blank();
+ if(!persist()){state=previous;$('startupError').textContent='Neue Klasse konnte nicht angelegt werden.';return;}
+ $('importStatus').textContent='Neue Klasse angelegt. Bitte Namen eintragen und eine JSON-Sicherung herunterladen.';
+ finishStartup('people');
+};
+$('exportCsv').onclick=()=>{
+ const ordered=state.history.slice().sort((a,b)=>a.date.localeCompare(b.date)||a.savedAt.localeCompare(b.savedAt));
+ const rows=[['Name','Summe Mathe','Summe Deutsch','Summe Englisch','Summe Lesen','Summe Fehlt',...ordered.map(r=>formatDate(r.date))]];
+ allPeople().forEach(p=>{const picks=ordered.map(r=>bySlot(r,p.id)?.color||'');rows.push([p.name,...['Mathe','Deutsch','Englisch','Lesen','Fehlt'].map(c=>picks.filter(x=>x===c).length),...picks]);});
+ downloadFile('faecherauswahl_uebersicht.csv','\ufeff'+rows.map(r=>r.map(csvCell).join(';')).join('\r\n'),'text/csv;charset=utf-8');
+};
+async function handleImport(event){
+ const f=event.target.files?.[0];if(!f)return;
+ try{
+  const raw=JSON.parse(await f.text());
+  if(raw.format!=='faecherauswahl-30'||!Array.isArray(raw.names)||raw.names.length!==30||!Array.isArray(raw.history)||raw.history.length>20000)throw new Error('Ungültiges Sicherungsformat.');
+  if(raw.history.some(r=>!r||typeof r.date!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(r.date)||!Array.isArray(r.entries)||r.entries.length>30))throw new Error('Ungültige Verlaufsdaten.');
+  if(!confirm(`Sicherung vom ${raw.exportedAt?new Date(raw.exportedAt).toLocaleString('de-DE'):'unbekannten Datum'} importieren? Die aktuellen Daten dieses Browsers werden dabei ersetzt.`))return;
+  const before=state;
+  state={names:raw.names.map(x=>String(x??'').slice(0,120)),draft:Array.from({length:30},(_,i)=>COLORS.includes(convert(raw.draft?.[i]))?convert(raw.draft[i]):''),history:raw.history.map(r=>({id:String(r.id||crypto.randomUUID()),date:r.date,savedAt:r.savedAt||r.date,entries:r.entries.map((e,i)=>({slot:Number.isInteger(e.slot)&&e.slot>=0&&e.slot<30?e.slot:i,name:String(e.name||''),color:COLORS.includes(convert(e.color))?convert(e.color):''}))}))};
+  if(!persist()){state=before;throw new Error('Speichern im Browser fehlgeschlagen.');}
+  renderPeople();renderVote();renderHistory();$('importStatus').textContent=`✓ ${state.history.length} Termine und ${state.names.filter(Boolean).length} Personen geladen.`;
+  if(startupOpen)finishStartup(state.names.some(n=>n.trim())?'vote':'people');
+ }catch(err){$('importStatus').textContent='Import fehlgeschlagen: '+err.message;if(startupOpen)$('startupError').textContent='Import fehlgeschlagen: '+err.message;}
+ finally{event.target.value='';}
+}
+$('importFile').addEventListener('change',handleImport);
+$('startupFile').addEventListener('change',handleImport);
+renderPeople();
+$('startNew').focus();
+</script></body></html>
